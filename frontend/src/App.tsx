@@ -140,6 +140,5 @@ export default function App() {
     </Canvas>
 
  </div>
- <NetMeshEditor/>
   </>);
 }
