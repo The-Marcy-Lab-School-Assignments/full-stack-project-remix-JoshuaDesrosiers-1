@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.f{
+@apply flex;
+}
+
+.App{
+  grid-template-columns: 1fr 1fr;
+  @apply bg-neutral-950 h-screen w-full grid grid-cols-2;
+}
+.App section{
+
+}
+canvas{
+  @apply bg-neutral-950 border-gray-700 border-4;
+}
+.Canvas-container{
+
+}
+.Canvas{
+@apply bg-neutral-200;
+}
+
+* *{
+  image-rendering: pixelated;
+   font-family: "Inconsolata", monospace;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+.pick{
+  @apply border-2 border-black outline outline-white w-5 h-5 max-h-5 max-w-5 w-full h-full relative;
+}
+.pick .wrapper{
+  @apply absolute max-h-5 h-full top-full;
+}
+
+.Toolbar{
+  @apply p-2 bg-neutral-800
+}
+.IconButton{
+  @apply max-h-7 max-w-7 w-full h-full border-2 border-neutral-500 text-white rounded-md;
+}
+
+.AddMenu{
+ @apply flex flex-col relative;
+}
+.AddMenu>.Menu{
+  @apply absolute left-0 mt-8 flex flex-col bg-neutral-900 border-neutral-500 border-2 p-1 w-full max-w-40 rounded-md z-20;
+}
+.AddMenu>.Menu>*{
+@apply text-white;
+}
+.AddMenu>.Menu>*>Button{
+@apply w-full text-left;
+}
+.AddMenu>.Menu>*:hover{
+@apply text-white bg-gray-500;
+}
+
+.MaterialMapper{
+  @apply p-3 bg-pink-200
+}
+
+.VectorInput{
+  @apply flex gap-2 p-2;
+}
+.VectorInput input, .basicInput{
+  @apply border-2 border-neutral-500 bg-transparent rounded-md text-white px-1 w-full max-w-16;
+}
+.VectorInput input:active,.VectorInput input:focus{
+@apply outline-none
+}
+.VectorInput li{
+  @apply flex text-neutral-400;
+}
+.subText{@apply text-neutral-400 px-2}; .primeText{@apply text-neutral-200 px-2}
+.basicInput{
+  @apply max-w-full w-full;
+}
+
+.ColorPicker{
+@apply p-3 w-full border-4 outline -outline-offset-1 outline-white border-black relative;
+}
+
+.ColorPicker>div{
+  @apply absolute
+}
