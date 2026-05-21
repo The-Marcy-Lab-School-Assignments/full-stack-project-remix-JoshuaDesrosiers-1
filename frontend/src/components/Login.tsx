@@ -1,23 +1,47 @@
 import { useState } from 'react';
+import type { FormEvent } from 'react';
 import LogIm from '../assets/Login.png'
-import {motion} from 'framer-motion'
-export default function LogIn({handleLogin, handleRegister}:{handleLogin: (username: string, password: string) => void, handleRegister: (username: string, password: string) => void}) {
-    const [logorRegister, setLogorRegister] = useState(true) // true :login, false :register;
+
+type LoginProps = {
+    handleLogin: (username: string, password: string) => Promise<Error | undefined>;
+    handleRegister: (username: string, password: string) => Promise<Error | undefined>;
+};
+
+export default function LogIn({handleLogin, handleRegister}: LoginProps) {
+    const [isLogin, setIsLogin] = useState(true);
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState<string | null>(null);
+
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setError(null);
+
+        const authError = isLogin
+            ? await handleLogin(username, password)
+            : await handleRegister(username, password);
+
+        if (authError) {
+            setError(authError.message);
+        }
+    };
+
     return (
     
        <section className="login">
             
-            <form>
+            <form onSubmit={handleSubmit}>
                 <label htmlFor="username">Username:</label>
-                <input type="text" id="username" name="username" required />
+                <input type="text" id="username" name="username" value={username} onChange={(event) => setUsername(event.target.value)} required />
                 <label htmlFor="password">Password:</label>
-                <input type="password" id="password" name="password" required />
-                <button type="submit" onClick={(e) => {
-                    e.preventDefault();
-                    handleRegister((document.getElementById('username') as HTMLInputElement).value, (document.getElementById('password') as HTMLInputElement).value); }}>Log In</button>
+                <input type="password" id="password" name="password" value={password} onChange={(event) => setPassword(event.target.value)} required />
+                {error && <p role="alert">{error}</p>}
+                <button type="submit">{isLogin ? 'Log In' : 'Register' }</button>
             </form>
+            <button onClick={() => setIsLogin(!isLogin)}>{isLogin ? 'Switch to Register' : 'Switch to Log In'}</button>
             <img src={LogIm} alt="Login"/>
             {/* <motion.div className='boy' initial={{ right: '-100%' }} animate={{ right: '-2%' }} transition={{ duration: 2 }}/> */}
+            
         </section>
     );
 }

@@ -1,90 +1,83 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import Navigator from './components/Navigator'
-import Canvas from './components/Canvas'
-import Pallete from './components/Pallete'
 import Renshi from './components/Renshi'
-import FoodForm from './components/foodForm'
-import { fetchAllSushis } from './adapters/sushi-adapters'
 import chef from './assets/chef.png'
-import startIm from './assets/sushextrude.png'
-import { getMe, login, register, logout } from './adapters/auth-adapters'
+import { getMe, login, register, type User } from './adapters/auth-adapters'
 import LogIn from './components/Login'
 import Kitchen from './components/Kitchen'
+import Home, { type CookingSystemState } from './components/Home'
 import { AnimatePresence, motion } from 'framer-motion'
+
+export type Screen = 'login' | 'home' | 'kitchen' | 'shop';
+
+const colors = {
+  rice: '#f3f4f6',
+  salmon: '#f87171',
+  tuna: '#f9c80e',
+  pepper: '#1f2937',
+  soy: '#fef3c7',
+  avocado: '#10b981',
+} as const;
+
 function App() {
-  const [screen, setScreen] = useState('login')
-  const [focusedText,setFocusedText] = useState('')
-  const colors = { 'rice': '#f3f4f6', 'salmon': '#f87171', 'tuna': '#f9c80e', 'pepper': '#1f2937', 'soy': '#fef3c7', 'avocado': '#10b981' }
-  const [color, setColor] = useState(colors['salmon'])
+  const [screen, setScreen] = useState<Screen>('login')
+  const [color, setColor] = useState<string>(colors['salmon'])
   const [sushitrix, setSushitrix] = useState<string[][]|null>(null)
-  const [currentUser,setCurrentUser] = useState<string|null>(null);
-  const [customers, setCustomers] = useState<string|null>(null);
-  const [loading,setIsLoading] = useState(false);
-  const [error,setError] = useState<string|null>(null);
-  const [sushis, setSushis] = useState<string[][]|null>(null);
-  const [cooked,setCooked] = useState(false);
+  const [currentUser,setCurrentUser] = useState<User|null>(null);
+  const [cookingState, setCookingState] = useState<CookingSystemState>({
+    selectedSushiId: null,
+    cookingQueue: [],
+    chefEnergy: 100,
+    stage: 'idle',
+    cookedCount: 0,
+  });
+
    useEffect(() => {
       const checkForSession = async () => {
         const { data: user } = await getMe();
         setCurrentUser(user);
+        setScreen(user ? 'kitchen' : 'login');
       };
       checkForSession();
     }, []);
-  
+
     // Handlers that manage updating the current user. 
     // Defined in App to ensure that child components only                       
     // update the current user in a controlled manner.  
-    const handleLogin = async (username:string, password:string) => {
+    const handleLogin = async (username:string, password:string): Promise<Error | undefined> => {
       const { data: user, error } = await login(username, password);
       if (error) return error;
       setCurrentUser(user);
+      setScreen('kitchen');
     };
   
-    const handleRegister = async (username:string, password:string) => {
+    const handleRegister = async (username:string, password:string): Promise<Error | undefined> => {
       const { data: user, error } = await register(username, password);
       if (error) return error;
       setCurrentUser(user);
+      setScreen('kitchen');
     };
-    
-    const handleLogout = async () => {
-      await logout();
-      setCurrentUser(null);
-    };
-    const loadSushis = async () => {
-        setIsLoading(true);
-        setError(null);
-        const { data, error: fetchError } = await fetchAllSushis();
-        if (fetchError) {
-          setError(fetchError.message);
-        } else {
-          setSushis(data);
-        }
-        setIsLoading(false);
-      };
-      //wait 5 seconds async and make a sushi if sushis are loaded and not null and if the sushi is not already cooked
-      const makeSushi = async () => {
-        //use promise to make a timer
-        await new Promise(resolve => setTimeout(resolve, 5000));
-        if (sushis && sushis.length > 0 && !cooked) {
-          setCooked(true);
-        }
-      };
+
+    const visibleScreen = currentUser ? screen : 'login';
       
   return (
     <div className='app'>
-      <div className={screen+'bg'}/>
+      <div className={visibleScreen+'bg'}/>
     <Navigator setScreen = {setScreen}/>
     <div className='navigator-spacer'></div>
-      {/* {(()=>{if(!currentUser &&(screen !== 'login'))setScreen('login');return(<></>)})()} */}
-     
+    
+     {(visibleScreen==='login') && <LogIn handleLogin={handleLogin} handleRegister={handleRegister}/>}
 
       <section className='app-container'>
-        <AnimatePresence>
-      {(screen === 'kitchen') &&
-      <Kitchen colors={colors} color={color} setColor={setColor} setSushitrix={setSushitrix} setScreen={setScreen} />
+      <AnimatePresence>
+      {(visibleScreen === 'home') &&
+      <Home cookingState={cookingState} setCookingState={setCookingState} />
+      }
+      {(visibleScreen === 'kitchen') &&
+      <Kitchen colors={colors} color={color} setColor={setColor} setSushitrix={setSushitrix} />
       }</AnimatePresence>
-      <Renshi sushitrix={sushitrix}/>
+      <Renshi sushitrix={sushitrix} onDismiss={() => setSushitrix(null)}/>
       </section>
       {/* <LogIn handleLogin={handleLogin} handleRegister={handleRegister}/> */}
 

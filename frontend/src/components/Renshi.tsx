@@ -1,8 +1,12 @@
 import { Canvas } from "@react-three/fiber"
-import { OrbitControls } from "@react-three/drei"
-import { Bloom, EffectComposer, Noise } from "@react-three/postprocessing"
 import { AnimatePresence, motion } from "framer-motion"
-export default function Renshi({sushitrix}:{sushitrix: string[][]|null}) {
+
+type RenshiProps = {
+    sushitrix: string[][] | null;
+    onDismiss: () => void;
+};
+
+export default function Renshi({sushitrix, onDismiss}: RenshiProps) {
     return (<AnimatePresence>
         
         {sushitrix && (<motion.div
@@ -11,6 +15,7 @@ export default function Renshi({sushitrix}:{sushitrix: string[][]|null}) {
         exit={{ bottom: -1000 }}
         transition={{ duration: 2, ease: 'easeInOut' }}
         className="renshi-container"
+        onClick={onDismiss}
         >
         <Canvas className="renshi"
         frameloop="demand"
@@ -42,7 +47,6 @@ export default function Renshi({sushitrix}:{sushitrix: string[][]|null}) {
                 sushitrix?.map((row, i) =>
                     row.map((cell, j) => {
                         if (cell) {
-                            console.log(cell);
                             return((i>0 && j>0 || i<sushitrix.length-1 && j<sushitrix[0].length-1)?
                             <mesh key={`${i}-${j}`} position={[i-16,0,j-16]} castShadow>
                                 <boxGeometry args={[1, 15, 1]} />

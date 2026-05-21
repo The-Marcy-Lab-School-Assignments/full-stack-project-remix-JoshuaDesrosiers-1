@@ -1,5 +1,10 @@
+type PalleteProps = {
+  colors: Record<string, string>;
+  selectedColor: string;
+  setColor: (color: string) => void;
+};
 
-export default function Pallete({colors,setColor,selectedColor}:{colors: { [key: string]: string }, setColor: (color: string) => void, selectedColor: string}) {
+export default function Pallete({colors,setColor,selectedColor}: PalleteProps) {
 return (
 <ul className="pallete">
   {Object.keys(colors).map((color) => (

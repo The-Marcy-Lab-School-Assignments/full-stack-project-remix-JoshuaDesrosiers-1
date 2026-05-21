@@ -1,12 +1,18 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import im from '../assets/frame.png'
 
+type CanvasProps = {
+    matxSize: number;
+    col: string;
+    setSushitrix: (payload: { matrix: string[][]; imageDataUrl: string }) => void;
+};
 
-export default function Canvas({matxSize, col, setSushitrix}: {matxSize: number, col: string,setSushitrix: (sushitrix: string[][]) => void}) {
+export default function Canvas({matxSize, col, setSushitrix}: CanvasProps) {
     const [canDraw, setCD] = useState(false)
+    const canvasRef = useRef<HTMLCanvasElement>(null)
 
     useEffect(() => {
-        const canvas = document.querySelector('.canvas') as HTMLCanvasElement;
+        const canvas = canvasRef.current;
         if (canvas) {
             const ctx = canvas.getContext('2d');
             if (ctx) {
@@ -47,7 +53,7 @@ export default function Canvas({matxSize, col, setSushitrix}: {matxSize: number,
                 
             }
         }
-    }, []);
+    }, [matxSize]);
 
     // Helper to extract correct coordinates for both Mouse and Touch events
     const drawPixel = (target: HTMLCanvasElement, clientX: number, clientY: number) => {
@@ -100,6 +106,7 @@ export default function Canvas({matxSize, col, setSushitrix}: {matxSize: number,
 
     return (<div className="canvas-wrapper">
         <canvas 
+            ref={canvasRef}
             className="canvas" 
             width={matxSize} 
             height={matxSize} 
@@ -121,6 +128,7 @@ export default function Canvas({matxSize, col, setSushitrix}: {matxSize: number,
             onTouchStart={(event: React.TouchEvent<HTMLCanvasElement>) => {
                 setCD(true);
                 const touch = event.touches[0];
+                if (!touch) return;
                 drawPixel(event.currentTarget, touch.clientX, touch.clientY);
             }}
             onTouchEnd={() => {
@@ -132,6 +140,7 @@ export default function Canvas({matxSize, col, setSushitrix}: {matxSize: number,
                     if (event.cancelable) event.preventDefault(); 
                     
                     const touch = event.touches[0];
+                    if (!touch) return;
                     drawPixel(event.currentTarget, touch.clientX, touch.clientY);
                 }
             }}
@@ -139,7 +148,9 @@ export default function Canvas({matxSize, col, setSushitrix}: {matxSize: number,
         <button onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
             e.stopPropagation();
             e.preventDefault();
-            const canvas = document.querySelector('.canvas') as HTMLCanvasElement;
+            const canvas = canvasRef.current;
+            if (!canvas) return;
+
             const ctx = canvas.getContext('2d');
             if (ctx) {
                 const sushitrix: string[][] = [];
@@ -157,7 +168,21 @@ export default function Canvas({matxSize, col, setSushitrix}: {matxSize: number,
                     }
                     sushitrix.push(row);
                 }
-                setSushitrix(sushitrix);
+                const previewCanvas = document.createElement('canvas');
+                previewCanvas.width = 128;
+                previewCanvas.height = 128;
+                const previewCtx = previewCanvas.getContext('2d');
+
+                if (!previewCtx) return;
+
+                previewCtx.imageSmoothingEnabled = false;
+                previewCtx.clearRect(0, 0, previewCanvas.width, previewCanvas.height);
+                previewCtx.drawImage(canvas, 0, 0, previewCanvas.width, previewCanvas.height);
+
+                setSushitrix({
+                    matrix: sushitrix,
+                    imageDataUrl: previewCanvas.toDataURL('image/png'),
+                });
             }
         }}>Get Sushitrix</button>
     </div>)
