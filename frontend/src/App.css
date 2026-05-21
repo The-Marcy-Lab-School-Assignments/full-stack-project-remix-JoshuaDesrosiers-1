@@ -1,185 +1,193 @@
-* {
-  box-sizing: border-box;
+@import url('https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
   margin: 0;
   padding: 0;
+  font-family: 'DynaPuff', cursive;
+  @apply h-full -z-20;
+  font-family: 'DynaPuff', cursive;
+  image-rendering: pixelated;
 }
 
-body {
-  font-family: system-ui, sans-serif;
-  background: #f5f5f5;
-  color: #1a1a1a;
+.app{
+  @apply w-full h-full flex flex-col p-2 mt-12 items-center;
+}
+.loginbg, .kitchenbg{
+  @apply fixed top-0 left-0 w-full h-full -z-10 bg-rose-200;
+  background-image: url('./assets/sushi.png'), url('./assets/sushi.png');
+  background-size: 100px 100px;
+  background-position: 200px 200px, 500px 500px;
+  background-repeat: repeat;
+}
+.homebg{
+   @apply fixed top-0 left-0 w-full h-full -z-10 bg-blue-400;
+}
+.navigator{
+  @apply p-3 fixed h-16 top-0 left-0 w-full border-b-4 z-30 border-b-green-900 flex gap-3 items-center bg-rose-100;
+
+.logo{
+  @apply w-12 cursor-pointer duration-200;
+}
 }
 
-main {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+
+.logo:hover{
+  animation: rotatefull 0.5s linear;
 }
 
-h1 {
-  font-size: 1.75rem;
-  margin-bottom: 1.5rem;
-  color: #1d4ed8;
-}
-
-/* Auth forms */
-#auth-section {
-  display: flex;
-  gap: 1.5rem;
-}
-
-form {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-  flex: 1;
-}
-
-form h2 {
-  margin-bottom: 1rem;
-  font-size: 1.1rem;
-  color: #374151;
-}
-
-form input {
-  display: block;
-  width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  font-size: 0.95rem;
-}
-
-form button[type='submit'] {
-  background: #1d4ed8;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.95rem;
-}
-
-.error {
-  color: #dc2626;
-  font-size: 0.85rem;
-  margin-bottom: 0.5rem;
-}
-
-/* Logged-in view */
-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-#user-controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: white;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-}
-
-#user-controls button {
-  background: #dc2626;
-  color: white;
-  border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-
-/* Add todo form */
-#add-todo-form {
-  display: flex;
-  gap: 0.5rem;
-  background: white;
-  padding: 1rem;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-  flex-direction: column;
-}
-
-#add-todo-form label {
-  font-size: 0.9rem;
-  color: #374151;
-  display: none;
-}
-
-#add-todo-form input {
-  flex: 1;
-  padding: 0.5rem;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  font-size: 0.95rem;
-  margin-bottom: 0;
-}
-
-#add-todo-form button {
-  background: #1d4ed8;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.95rem;
-}
-
-/* Todo list */
-#todo-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.todo-item {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.todo-item input[type='checkbox'] {
-  width: 1rem;
-  height: 1rem;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-.todo-item span {
-  flex: 1;
-  font-size: 0.95rem;
-}
-
-.todo-item span.completed {
-  text-decoration: line-through;
-  color: #9ca3af;
-}
-
-.delete-btn {
-  background: #dc2626;
-  color: white;
-  border: none;
-  padding: 0.3rem 0.6rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  flex-shrink: 0;
-}
-
-@media (min-width: 480px) {
-  #add-todo-form {
-    flex-direction: row;
-    align-items: flex-end;
+@keyframes rotatefull {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
+
+.navigator button, .login button,.canvas-wrapper button{
+  /* outline-green-900 = rgb(0, 100, 0) */
+  filter: drop-shadow(0px 6px #14532d);
+  transition: filter 0.2s, translate-y 0.2s,transform 0.2s;
+  @apply text-lg outline-4 translate-y-[0px] relative delay-500 flex justify-center outline-green-900 outline ml-3 px-3 bg-white rounded-md transition-colors duration-200 mt-0;
+}
+
+
+.navigator button:hover, .login button:hover,.canvas-wrapper button:hover{
+  filter: drop-shadow(0px 0px #14532d);
+
+  @apply translate-y-[6px] delay-200;
+}
+
+.navigator button:hover .hand{
+  cursor:crosshair;
+  @apply absolute -top-12 duration-200 mx-auto;
+}
+
+.hand{
+  @apply max-w-8 w-full fixed -top-64 pointer-events-none bg-transparent;
+}
+.navigator span{
+@apply text-xl font-bold text-green-900 mr-auto ;
+}
+
+.canvas{
+  /* checkered pattern */ 
+  /* animate background changing colors to show transparent pixels better */
+  animation: shadeColor 5s infinite;
+  background-image: linear-gradient(45deg, #f3f4f6 25%, transparent 25%), linear-gradient(-45deg, #f3f4f6 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #f3f4f6 75%), linear-gradient(-45deg, transparent 75%, #f3f4f6 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+   -webkit-user-drag: none; 
+   user-select: none; 
+    touch-action: none; 
+  @apply w-full max-w-2xl aspect-square h-auto border-4 rounded-md border-green-900;
+}
+
+@keyframes shadeColor {
+  0% {
+    background-color: #9047ef;
+  }
+  25% {
+    background-color: #fa26b0;
+  }
+  50% {
+    background-color: #e92623;
+  }
+  75% {
+    background-color: #f9c80e;
+  }
+  100% {
+    background-color: #9047ef;
+  }
+}
+.app-container{
+  @apply py-5 px-2 w-full;
+}
+
+.pallete{
+  @apply max-w-36 w-full flex flex-col gap-2 bg-rose-100 p-3 outline-4 outline-green-900 outline rounded-md;
+  li { @apply flex font-semibold text-lg; }
+  .selected{
+  @apply rounded-md
+}
+ button{
+  @apply max-w-10 max-h-10 w-full h-full aspect-square ml-auto rounded-full border-4 outline-2 outline-white border-black outline; 
+}
+}
+.pallete-canvas{
+  @apply w-full flex gap-3 p-2;
+}
+.renshi{
+  @apply max-w-xl w-full h-32 aspect-square;
+}
+.renshi-container{
+  @apply w-full flex justify-center fixed mx-auto;
+}
+.kitchen{
+ @apply flex flex-col w-full bg-rose-100 border-4 border-green-900 rounded-md p-2; 
+}
+
+.kitchen label, .kitchen input, .kitchen textarea{
+  @apply mb-1 font-semibold text-lg;
+}
+.kitchen label{
+  @apply bg-rose-100 p-2 border-4 border-red-400 rounded-md w-fit;
+}
+.canvas-wrapper{
+  @apply w-full;
+}
+.food-form{
+  @apply w-full;
+}
+
+.kitchen input, .kitchen textarea{
+  @apply border-4 border-green-900 rounded-md px-2 font-semibold py-1 w-full;
+}
+
+.board{
+  background-image: url('./assets/sushextrude.png');
+  @apply absolute w-full h-screen bg-contain bg-no-repeat bg-right-bottom pointer-events-none;
+}
+/* .boy{
+  background-image: url('./assets/Illustration2.png');
+  @apply max-w-xl absolute w-full h-screen bg-contain bg-no-repeat bg-right-bottom pointer-events-none;
+} */
+
+
+.login{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  @apply gap-2 border-4 w-full border-green-900 rounded-md self-center bg-rose-100 max-w-2xl;
+
+form{
+  @apply flex gap-2 flex-col h-fit p-2 w-full;
+}
+
+input{
+  @apply border-4 border-green-900 rounded-md px-2 font-semibold py-1 w-full min-w-36;
+}
+label{
+  @apply text-lg;
+}
+button{ @apply mx-0 mt-2; }
+
+
+img{
+  @apply w-full h-auto bg-pink-200 aspect-square;
+
+}
+}
+
+.canvas-wrapper button{
+  @apply mx-0 mt-2;
+}
+
+.chef{
+  @apply fixed bottom-0 right-0 w-full max-w-56 h-auto flex;
+
+}
+

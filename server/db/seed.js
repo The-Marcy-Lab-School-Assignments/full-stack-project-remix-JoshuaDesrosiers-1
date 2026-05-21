@@ -4,8 +4,8 @@ const pool = require('./pool');
 const SALT_ROUNDS = 8;
 
 const seed = async () => {
-  // Drop tables in reverse dependency order (todos references users via FK)
-  await pool.query('DROP TABLE IF EXISTS todos');
+  // Drop tables in reverse dependency order (sushis references users via FK)
+  await pool.query('DROP TABLE IF EXISTS sushis');
   await pool.query('DROP TABLE IF EXISTS users');
 
   await pool.query(`
@@ -17,9 +17,9 @@ const seed = async () => {
   `);
 
   await pool.query(`
-    CREATE TABLE todos (
-      todo_id     SERIAL PRIMARY KEY,
-      title       TEXT NOT NULL,
+    CREATE TABLE sushis (
+      sushi_id     SERIAL PRIMARY KEY,
+      data       TEXT NOT NULL,
       is_complete BOOLEAN NOT NULL DEFAULT FALSE,
       user_id     INT REFERENCES users(user_id) ON DELETE CASCADE
     )
@@ -42,7 +42,7 @@ const seed = async () => {
   const [alice, bob] = users;
 
   await pool.query(`
-    INSERT INTO todos (title, is_complete, user_id) VALUES
+    INSERT INTO sushis (data, is_complete, user_id) VALUES
       ('Buy groceries',        FALSE, $1),
       ('Walk the dog',         FALSE, $1),
       ('Read a book',          TRUE,  $1),
