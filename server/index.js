@@ -6,7 +6,7 @@ require('dotenv').config();
 const logRoutes = require('./middleware/logRoutes');
 const checkAuthentication = require('./middleware/checkAuthentication');
 const authControllers = require('./controllers/authControllers');
-const todoControllers = require('./controllers/todoControllers');
+const sushiControllers = require('./controllers/sushiControllers');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -34,13 +34,13 @@ app.get('/api/auth/me', authControllers.getMe);
 app.delete('/api/auth/logout', authControllers.logout);
 
 // ====================================
-// Todo routes (all require authentication)
+// sushi routes (all require authentication)
 // ====================================
 
-app.get('/api/todos', checkAuthentication, todoControllers.listTodos);
-app.post('/api/todos', checkAuthentication, todoControllers.createTodo);
-app.patch('/api/todos/:todo_id', checkAuthentication, todoControllers.updateTodo);
-app.delete('/api/todos/:todo_id', checkAuthentication, todoControllers.deleteTodo);
+app.get('/api/sushis', checkAuthentication, sushiControllers.listSushis);
+app.post('/api/sushis', checkAuthentication, sushiControllers.createSushi);
+app.patch('/api/sushis/:sushi_id', checkAuthentication, sushiControllers.updateSushi);
+app.delete('/api/sushis/:sushi_id', checkAuthentication, sushiControllers.deleteSushi);
 
 // ====================================
 // Global Error Handler
