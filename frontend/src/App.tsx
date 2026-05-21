@@ -83,7 +83,7 @@ function App() {
 
       {/* alooping animation stretching vertically back and forth */}
       
-      <motion.img className='chef' src={chef} alt="Chef" initial={{ scale: 1 }} animate={{ scale: 1.1 }} exit={{ scale: 1 }} transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }} />
+      {/* <motion.img className='chef' src={chef} alt="Chef" initial={{ scale: 1 }} animate={{ scale: 1.1 }} exit={{ scale: 1 }} transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }} /> */}
 
       </div>
       

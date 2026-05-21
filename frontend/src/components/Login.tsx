@@ -37,8 +37,9 @@ export default function LogIn({handleLogin, handleRegister}: LoginProps) {
                 <input type="password" id="password" name="password" value={password} onChange={(event) => setPassword(event.target.value)} required />
                 {error && <p role="alert">{error}</p>}
                 <button type="submit">{isLogin ? 'Log In' : 'Register' }</button>
+                  <button onClick={() => setIsLogin(!isLogin)}>{isLogin ? 'Switch to Register' : 'Switch to Log In'}</button>
             </form>
-            <button onClick={() => setIsLogin(!isLogin)}>{isLogin ? 'Switch to Register' : 'Switch to Log In'}</button>
+          
             <img src={LogIm} alt="Login"/>
             {/* <motion.div className='boy' initial={{ right: '-100%' }} animate={{ right: '-2%' }} transition={{ duration: 2 }}/> */}
             
