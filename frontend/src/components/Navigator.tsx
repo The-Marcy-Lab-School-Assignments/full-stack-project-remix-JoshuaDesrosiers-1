@@ -10,7 +10,7 @@ export default function Navigator({ setScreen }: { setScreen: (screen: Screen) =
     <div className="navigator">
       <img src={curLogo?sushi1:sushi2} alt="Sushi" className='logo' onClick={()=>setCurLogo(curLogo=>!curLogo)}/>
       <span>SushExtrude</span>
-      <button onClick={()=>{setScreen('home')}}>Home<img className='hand' src={hand}></img></button>
+      {/* <button onClick={()=>{setScreen('home')}}>Home<img className='hand' src={hand}></img></button> */}
       <button onClick={()=>{setScreen('kitchen')}}>Kitchen&nbsp;<img className='hand' src={hand}></img></button>
     </div>
   );
